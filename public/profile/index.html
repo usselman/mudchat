@@ -1,0 +1,37 @@
+<html>
+  Profile
+  <button onclick="login()">Login</button>
+</html>
+<script>
+  const login = async () => {
+    if (!localStorage.hcauth) {
+      location.href =
+        "https://app.handcash.io/#/authorizeApp?appId=637c200581ed6c4e5eaccb64";
+    }
+  };
+  const getHcProfile = async () => {
+    const urlParams = new URLSearchParams(location.search);
+    const hcauth = urlParams.get("authToken");
+    if (hcauth) {
+      const r = await fetch(`/hcaccount`, {
+        method: "post",
+        body: JSON.stringify({
+          hcauth,
+        }),
+      });
+      const res = await r.json();
+      console.log(res);
+      if (res) {
+        localStorage.hcauth = hcauth;
+        localStorage.paymail = res.paymail;
+        localStorage.handle = res.handle;
+        localStorage.avatar = res.avatarUrl;
+        alert(`Logged in as ${localStorage.handle}!`);
+        setTimeout(() => {
+          location.hrefn = "/";
+        }, 500);
+      }
+    }
+  };
+  getHcProfile();
+</script>

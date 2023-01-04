@@ -1,0 +1,52 @@
+<html>
+  HandCash MudChat Client 1.0
+</html>
+<body>
+  <p>Hello</p>
+  <button onclick="location.href='/profile'">Profile</button>
+  <input type="text" id="content" />
+  <button id="post">Post</button>
+</body>
+<script>
+  let chatArray = [
+    "19HxigV4QyBv3tHpQVcUEQyq1pzZVdoAut",
+    "", //content
+    "text/plain",
+    "utf-8",
+    "|",
+    "1PuQa7K62MiKCtssSLKy1kh56WWU7MtUR5",
+    "SET",
+    "app",
+    "mudchat",
+    "type",
+    "message",
+    "paymail",
+    localStorage.paymail,
+  ];
+  const urlParams = new URLSearchParams(location.search);
+  const channel = urlParams.get("c");
+  const content = document.getElementById("content");
+  const postBtn = document.getElementById("post");
+  postBtn.onclick = async () => {
+    console.log(content.value);
+    chatArray[1] = content.value;
+    if (channel) {
+      chatArray.push("context");
+      chatArray.push("channel");
+      chatArray.push("channel");
+      chatArray.push(channel);
+    }
+    const r = await fetch("/hcpost", {
+      method: "post",
+      body: JSON.stringify({
+        hcauth: localStorage.hcauth,
+        payload: chatArray,
+        action: "chat",
+      }),
+    });
+    const res = await r.json();
+    if (res) {
+      alert(`Message posted!`);
+    }
+  };
+</script>
