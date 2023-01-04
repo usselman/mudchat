@@ -9,8 +9,8 @@ const tokenSecret = process.env.APP_SECRET;
 const tokenID = process.env.APP_ID;
 
 const handCashConnect = new HandCashConnect({
-  tokenID,
-  tokenSecret,
+  appID: tokenID,
+  appSecret: tokenSecret,
 });
 
 app.use(express.static("public"));
